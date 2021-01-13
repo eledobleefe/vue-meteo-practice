@@ -1,32 +1,59 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-main class="teal lighten-3">
+      <v-container class="align-center">
+        <router-view>
+          <router-link to="/">Home</router-link>
+        </router-view>
+        <SelectProvincias
+          v-if="!prov.seleccionada"
+          :listProv="listProvincias"
+        />
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import SelectProvincias from "./components/SelectProvincias";
+import axios from "axios";
+import { mapState } from "vuex";
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: "App",
+  components: {
+    SelectProvincias,
+  },
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  data() {
+    return {
+      listProvincias: null,
+      loading: true,
+      errored: false,
+      infoProvincia: null,
+      loadingProv: true,
+      erroredProv: false,
+    };
+  },
+  methods: {
+    getListProvincias() {
+      axios
+        .get("https://www.el-tiempo.net/api/json/v2/provincias")
+        .then((response) => {
+          this.listProvincias = response.data.provincias;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errored = true;
+        })
+        .finally(() => (this.loading = false));
+    },
+  },
+  mounted() {
+    this.getListProvincias();
+  },
+  computed: {
+    ...mapState(["prov"]),
+  },
+};
+</script>
