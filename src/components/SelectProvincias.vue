@@ -1,6 +1,6 @@
 <template>
   <div id="selectProv" v-if="listProv">
-      <v-row justify="center">
+     <v-row justify="center">
         <v-col class="d-flex" cols="6">
           <v-select
             :items="listProv"
@@ -8,7 +8,7 @@
             name="provincia"
             item-value="CODPROV"
             item-text="NOMBRE_PROVINCIA"
-                        label="Selecciona una provincia"
+            label="Selecciona una provincia"
             return object
             outlined
           >
@@ -18,23 +18,23 @@
       <v-row justify="center">
         <v-col class="d-flex" cols="2">
           <v-btn class="ma-2" color="teal" dark @click="selectProv">
-            <router-link
-              class="white--text text-decoration-none"
-              to="/provincia"
-            >
               Listo
-            </router-link>
             <v-icon dark right>
               mdi-checkbox-marked-circle
             </v-icon>
           </v-btn>
         </v-col>
       </v-row>
+      <v-row justify="center">
+        <div v-if="showMessageProvEmpty">
+          <span> {{ messageProvEmpty }} </span>
+        </div>
+      </v-row>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+
 export default {
   name: "SelectProvincias",
   props: {
@@ -45,23 +45,22 @@ export default {
   },
   data() {
     return {
-      provSelected: "",
+      provSelected: '',
+      messageProvEmpty: 'Por favor seleccione una provincia',
+      showMessageProvEmpty: false
     };
   },
   methods: {
-    ...mapMutations(["seleccionarProv"]),
     selectProv() {
-      var codigo = this.provSelected;
-      //var nombre = this.provSelected.NOMBRE_PROVINCIA
-      this.seleccionarProv({
-        codProvincia: codigo,
-        //nameProvincia: nombre,
-        seleccionada: true,
-      });
+      if (this.provSelected === '') {
+        this.showMessageProvEmpty = true
+      } else {
+        this.$store.dispatch('selectProv', this.provSelected).then(() => {
+          this.showMessageProvEmpty = false
+          this.$router.push({name: 'Provincia'})
+        })
+      }
     }
-  },
-  computed: {
-    ...mapState(["prov"]),
-  },
+  }
 };
 </script>
