@@ -11,13 +11,15 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    seleccionarProv(state, payload) {
-      state.prov.codProvincia = payload.codProvincia,
+    selectProv(state, codProvincia) {
+      state.prov.codProvincia = codProvincia,
       state.prov.seleccionada = true
     }
   },
   actions: {
-    
+    selectProv({ commit }, codProvincia) {
+      commit('selectProv',codProvincia )
+    }
   },
   modules: {
   }

@@ -98,7 +98,8 @@
 
 <script>
 import { mapState } from "vuex";
-import axios from "axios";
+import api from '@/api';
+
 export default {
   name: "provincia",
   data() {
@@ -111,13 +112,12 @@ export default {
   },
   computed: {
     ...mapState(["prov"]),
-    
   },
   methods: {
     calcularFecha() {
-      var fechaActual  = new Date().toISOString().substring(0,10);
-      var arrayFecha = fechaActual.split(['-'])
-      var meses = ['enero', 'febrero', 'marzo',
+      const fechaActual  = new Date().toISOString().substring(0,10);
+      const arrayFecha = fechaActual.split(['-'])
+      const meses = ['enero', 'febrero', 'marzo',
                     'abril', 'mayo', 'junio',
                     'julio', 'agosto', 'septiembre',
                     'octubre', 'noviembre', 'diciembre']
@@ -126,18 +126,15 @@ export default {
     
   },
   mounted() {
-    axios
-      .get(
-        `https://www.el-tiempo.net/api/json/v2/provincias/${this.prov.codProvincia}`
-      )
-      .then((response) => {
-        this.infoProvincia = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-        this.erroredProv = true;
-      })
-      .finally(() => (this.loadingProv = false));
+    api.getTiempoProvincia(this.prov.codProvincia)
+    .then((response) => {
+      this.infoProvincia = response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+      this.erroredProv = true;
+    })
+    .finally(() => (this.loadingProv = false));
   },
 };
 </script>
