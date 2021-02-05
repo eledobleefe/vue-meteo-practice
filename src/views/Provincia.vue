@@ -93,15 +93,23 @@
         </v-container>
       </v-card>
     </v-layout>
+    <v-layout v-else-if="loadingProv">
+      <SkeletonLoader />
+    </v-layout>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import api from '@/api';
+import SkeletonLoader from '@/components/SkeletonLoaderComponent';
+
 
 export default {
   name: "provincia",
+  components: {
+    SkeletonLoader
+  },
   data() {
     return {
       infoProvincia: null,
