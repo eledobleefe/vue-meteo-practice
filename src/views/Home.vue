@@ -4,7 +4,7 @@
       <h1 class="display-1 text-center white--text">Bienvenido/a</h1>
       <p class="text-center white--text">a tu app del tiempo</p>
       <SelectProvincias
-        :listProv="listProvincias"/>
+      :listProv="listProvincias"/>
     </v-container>
   </div>
 </template>
@@ -12,14 +12,13 @@
 <script>
 import SelectProvincias from '@/components/SelectProvincias'
 import { mapState } from "vuex";
-import api from '@/api';
 
 export default {
   name: "home",
   components: {
-    SelectProvincias
+    SelectProvincias  
   },
-   mounted() {
+  created() {
     this.getListProvincias();
   },
   data() {
@@ -34,19 +33,19 @@ export default {
   },
    methods: {
     getListProvincias() {
-      api.getListProvincias()
-      .then((response) => {
-         this.listProvincias = response.data.provincias;
-      })
+      this.$store.dispatch('listarProv')
       .catch((error) => {
          console.log(error);
          this.errored = true;
       })
-      .finally(() => (this.loading = false));
+      .finally(() => (
+        this.listProvincias = this.$store.state.listaProv,
+        this.loading = false
+        ));
     }
   },
   computed: {
-    ...mapState(["prov"]),
+    ...mapState(["listaProv"]),
   },
 };
 </script>
