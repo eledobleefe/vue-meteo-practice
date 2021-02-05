@@ -79,11 +79,14 @@
                     </v-row>
                   </v-col>
                   <v-col cols="4">
-                    <v-img
+                    <!--v-img
                       src="https://cdn.vuetifyjs.com/images/cards/sun.png"
                       alt="Sunny image"
                       width="92"
-                    ></v-img>
+                    ></v-img>-->
+                    <v-icon class="iconoTiempo" :class="ciudad.stateSky['description']">
+                      {{ mostrarIcono(listaIconos, ciudad.stateSky["id"]) }}
+                    </v-icon>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -96,6 +99,9 @@
     <v-layout v-else-if="loadingProv">
       <SkeletonLoader />
     </v-layout>
+    <v-layout v-else-if="erroredProv">
+      <Alerta :mensaje="mensajeError" :color="colorError" :volver="volverError"/>
+    </v-layout>
   </div>
 </template>
 
@@ -103,23 +109,29 @@
 import { mapState } from "vuex";
 import api from '@/api';
 import SkeletonLoader from '@/components/SkeletonLoaderComponent';
-
+import Alerta from '@/components/AlertComponent';
+import ListaIconos from '@/assets/datos/estadoCielo';
 
 export default {
   name: "provincia",
   components: {
-    SkeletonLoader
+    SkeletonLoader,
+    Alerta
   },
   data() {
     return {
       infoProvincia: null,
       loadingProv: true,
       erroredProv: false,
-      fecha: ''
+      mensajeError: 'No se ha podido cargar la información',
+      colorError:'blue-grey',
+      volverError:'/',
+      fecha: '',
+      listaIconos: ListaIconos
     };
   },
   computed: {
-    ...mapState(["prov"]),
+    ...mapState(["prov"])
   },
   methods: {
     calcularFecha() {
@@ -130,6 +142,17 @@ export default {
                     'julio', 'agosto', 'septiembre',
                     'octubre', 'noviembre', 'diciembre']
       this.fecha = arrayFecha[2] + ' de ' + meses[(parseInt(arrayFecha[1])) - 1] + ', ' + arrayFecha[0]
+    },
+    mostrarIcono(lista, identificador) {
+      let listaCompleta = lista.estado;
+      let icono = "mdi-help-circle";
+      for(let i = 0; i < listaCompleta.length; i++) {
+        let listaId = listaCompleta[i].id;
+        if(listaId.find(id => id == identificador)) {
+          icono = listaCompleta[i].icon;
+        } 
+      }
+      return icono;
     }
     
   },
@@ -143,6 +166,35 @@ export default {
       this.erroredProv = true;
     })
     .finally(() => (this.loadingProv = false));
-  },
+  }
 };
 </script>
+
+<style scoped>
+  .iconoTiempo {
+    font-size: 90px;
+    color:teal;
+  }
+  .v-icon[class*="sun"] {
+    color:yellow
+  }
+  .v-icon[class*="cloud"] {
+    color:skyblue
+  }
+  .v-icon[class*="partly"]{
+    color:lightskyblue
+  }
+  .v-icon[class*="rain"],
+  .v-icon[class*="pour"] {
+    color:steelblue
+  }
+  .v-icon[class*="snow"] {
+    color:lightblue
+  }
+  .v-icon[class*="fog"] {
+    color:paleturquoise
+  }
+  .v-icon[class*="windy"] {
+    color:silver
+  }
+</style>
