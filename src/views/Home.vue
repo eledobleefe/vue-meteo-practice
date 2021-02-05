@@ -3,32 +3,34 @@
     <v-container class="align-center">
       <h1 class="display-1 text-center white--text">Bienvenido/a</h1>
       <p class="text-center white--text">a tu app del tiempo</p>
-      <SelectProvincias
-      :listProv="listProvincias"/>
+      <SelectProvincias :showSelect = "showSelect"/>
+      <Alerta :mensaje= "mensajeError" :color="color" :volver="volver" v-if="errored"/>
     </v-container>
   </div>
 </template>
 
 <script>
 import SelectProvincias from '@/components/SelectProvincias'
+import Alerta from '@/components/AlertComponent'
 import { mapState } from "vuex";
 
 export default {
   name: "home",
   components: {
-    SelectProvincias  
+    SelectProvincias,
+    Alerta 
   },
   created() {
     this.getListProvincias();
   },
   data() {
     return {
-      listProvincias: null,
       loading: true,
       errored: false,
-      infoProvincia: null,
-      loadingProv: true,
-      erroredProv: false,
+      showSelect: false,
+      mensajeError:'No se ha podido obtener información',
+      color:'blue-grey',
+      volver:false
     }
   },
    methods: {
@@ -39,8 +41,8 @@ export default {
          this.errored = true;
       })
       .finally(() => (
-        this.listProvincias = this.$store.state.listaProv,
-        this.loading = false
+        this.loading = false,
+        this.showSelect = true
         ));
     }
   },
