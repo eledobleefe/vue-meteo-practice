@@ -17,7 +17,7 @@
       </v-row>
       <v-row justify="center">
         <v-col class="d-flex" cols="2">
-          <v-btn class="ma-2" color="teal" dark @click="selectProv">
+          <v-btn class="m-auto" color="teal" dark @click="selectProv">
               Listo
             <v-icon dark right>
               mdi-checkbox-marked-circle
@@ -27,16 +27,19 @@
       </v-row>
       <v-row justify="center">
         <div v-if="showMessageProvEmpty">
-          <span> {{ messageProvEmpty }} </span>
+          <Alerta :mensaje= "messageProvEmpty"/>
         </div>
       </v-row>
   </div>
 </template>
 
 <script>
-
+import Alerta from './AlertComponent';
 export default {
   name: "SelectProvincias",
+  components: {
+    Alerta
+  },
   props: {
     listProv: {
       type: Array,
