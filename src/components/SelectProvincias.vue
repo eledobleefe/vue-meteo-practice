@@ -1,9 +1,9 @@
 <template>
-  <div id="selectProv" v-if="listProv">
+  <div id="selectProv" v-if="showSelect">
      <v-row justify="center">
         <v-col class="d-flex" cols="6">
           <v-select
-            :items="listProv"
+            :items="listaProv"
             v-model="provSelected"
             name="provincia"
             item-value="CODPROV"
@@ -27,7 +27,7 @@
       </v-row>
       <v-row justify="center">
         <div v-if="showMessageProvEmpty">
-          <Alerta :mensaje= "messageProvEmpty"/>
+          <Alerta :mensaje= "messageProvEmpty" :color="color" :volver="volver"/>
         </div>
       </v-row>
   </div>
@@ -41,15 +41,14 @@ export default {
     Alerta
   },
   props: {
-    listProv: {
-      type: Array,
-      default: () => [],
-    },
+    showSelect: Boolean
   },
   data() {
     return {
       provSelected: '',
       messageProvEmpty: 'Por favor seleccione una provincia',
+      color:'blue-grey',
+      volver: false,
       showMessageProvEmpty: false
     };
   },
@@ -63,6 +62,11 @@ export default {
           this.$router.push({name: 'Provincia'})
         })
       }
+    }
+  },
+  computed: {
+    listaProv() {
+      return this.$store.state.listaProv;
     }
   }
 };
