@@ -1,0 +1,62 @@
+{
+    "estado": [
+        {
+            "nombre": "despejado",
+            "icon" : "mdi-weather-sunny",
+            "id": ["11"]
+        },
+        {
+            "nombre": "despejadoN",
+            "icon" : "mdi-weather-night",
+            "id": ["11n"]
+        },
+        {
+            "nombre": "solConNubes",
+            "icon" : "mdi-weather-partly-cloudy",
+            "id": ["12", "13", "17"]
+        },
+        {
+            "nombre": "lunaConNubesN",
+            "icon" : "mdi-weather-night-partly-cloudy",
+            "id": ["12n", "13n", "17n"]
+        },
+        {
+            "nombre": "nublado",
+            "icon" : "mdi-weather-cloudy",
+            "id": ["14", "15", "16"]
+        },
+        {
+            "nombre": "tormentaYLluvia",
+            "icon" : "mdi-weather-thunder-rainy",
+            "id": ["51","52","53","54","61","62","63","64"]
+        },
+        {
+            "nombre": "lluvia",
+            "icon" : "mdi-weather-pouring",
+            "id": ["23","24","25","26","44","45","46"]
+        },
+        {
+            "nombre": "solYLluvia",
+            "icon" : "mdi-weather-partly-rainy",
+            "id": ["43", "43n"]
+        },
+        {
+            "nombre": "nieve",
+            "icon" : "mdi-weather-snowing-heavy",
+            "id": ["33","34","35","36","71","72","73","74"]
+        },
+        {
+            "nombre": "niebla",
+            "icon" : "mdi-weather-fog",
+            "id": ["81","82","81n","82n"]
+        },
+        {
+            "nombre": "wind",
+            "icon" : "mdi-weather-windy",
+            "id": ["wind"]
+        }
+
+    ]
+}
+
+
